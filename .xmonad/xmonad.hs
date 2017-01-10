@@ -1,8 +1,12 @@
 import XMonad
 import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.ManageDocks
+import XMonad.Layout.Fullscreen
+import XMonad.Layout.NoBorders
 import XMonad.Util.EZConfig
-import XMonad.Hooks.EwmhDesktops
+-- import XMonad.Hooks.EwmhDesktops
+import qualified XMonad.Hooks.EwmhDesktops as E
 import System.Exit
 import XMonad.Hooks.SetWMName
 import Data.List
@@ -24,13 +28,20 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 baseConfig = desktopConfig
 
-myConfig = baseConfig { terminal = "xterm"
+myConfig = baseConfig
+	{ terminal = "xterm"
 	, modMask = mod4Mask
+	, layoutHook = myLayout
 	, borderWidth = 1
 	, manageHook = myManageHook
-        , handleEventHook = fullscreenEventHook
+        , handleEventHook = mconcat [ docksEventHook, E.fullscreenEventHook ]
 	, startupHook = setWMName "LG3D"
 	} `additionalKeys` myKeys `additionalKeysP` myKeysP
+
+myLayout = avoidStruts (
+	Tall 1 (3/100) (1/2) |||
+	Mirror (Tall 1 (3/100) (1/2))) |||
+	noBorders (fullscreenFull Full)
 
 myManageHook = composeAll
    [ className =? "Rhythmbox" --> doShift "="
