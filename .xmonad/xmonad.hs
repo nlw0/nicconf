@@ -71,6 +71,7 @@ myKeysP = ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 10")
         : ("M-<F12>", spawn "scrot -e 'xclip -target image/png -selection c -i $f'")
         : ("M-S-<F12>", spawn "sleep 0.5; scrot -d 1 -s -e 'xclip -target image/png -selection c -i $f'")
         : ("M-]", spawn "xterm -e \"ssh -Y nic@10.71.2.14\"")
+        : ("M-<Return>", spawn "emacsclient -c")
         : ("M-0", spawn "keyboard_layout_change.sh")
         : [
 	(otherModMasks ++ "M-" ++ [key], action tag)
