@@ -93,14 +93,19 @@
 (add-hook 'python-mode-hook 'py-autopep8-enable-on-save)
 (setq py-autopep8-options '("--max-line-length=100"))
 
+(global-unset-key (kbd "C-n"))
+
+(require 'multiple-cursors)
+
+(define-key (current-global-map) (kbd "C-n C-n") 'mc/edit-lines)
+(define-key (current-global-map) (kbd "C-n C-b") 'mc/mark-all-like-this-dwim)
+
 (require 'flycheck)
 (require 'pyimpsort)
 
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ; (require 'flycheck-tip)
-
-(global-unset-key (kbd "C-n"))
 
 (add-hook 'python-mode-hook
 	  '(lambda ()
@@ -114,11 +119,6 @@
 
 ;; To avoid echoing error message on minibuffer (optional)
 ;; (setq flycheck-display-errors-function 'ignore)
-
-(require 'multiple-cursors)
-
-(define-key (current-global-map) (kbd "C-n C-n") 'mc/edit-lines)
-(define-key (current-global-map) (kbd "C-n C-b") 'mc/mark-all-like-this-dwim)
 
 (global-set-key (kbd "M-SPC") 'hippie-expand)
 
