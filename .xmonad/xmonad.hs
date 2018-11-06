@@ -3,7 +3,6 @@ import XMonad.Config.Desktop
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Layout.Fullscreen
-import XMonad.Layout.SimpleFloat
 import XMonad.Layout.NoBorders
 import XMonad.Util.EZConfig
 -- import XMonad.Hooks.EwmhDesktops
@@ -18,7 +17,7 @@ import qualified XMonad.StackSet as W
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 
 -- Command to launch the bar.
-myBar = "/home/lealwern/.cabal/bin/xmobar"
+myBar = "/home/user/.cabal/bin/xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
@@ -29,20 +28,18 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 baseConfig = desktopConfig
 
 myConfig = baseConfig
-	   { terminal = "xterm"
-	   , modMask = mod4Mask
-	   , layoutHook = myLayout
-	, borderWidth = 1
-	, manageHook = myManageHook
-        , handleEventHook = mconcat [ docksEventHook, E.fullscreenEventHook ]
-	, startupHook = setWMName "LG3D"
-	} `additionalKeys` myKeys `additionalKeysP` myKeysP
+  { terminal = "xterm"
+  , modMask = mod4Mask
+  , layoutHook = myLayout
+  , borderWidth = 1
+  , manageHook = myManageHook
+  , handleEventHook = mconcat [ docksEventHook, E.fullscreenEventHook ]
+  , startupHook = setWMName "LG3D"
+  } `additionalKeys` myKeys `additionalKeysP` myKeysP
 
-myLayout = avoidStruts (
-	Tall 1 (3/100) (1/2) |||
-	Mirror (Tall 1 (3/100) (1/2))) |||
-	simpleFloat |||
-	noBorders (fullscreenFull Full)
+myLayout =
+  avoidStruts (Tall 1 (3/100) (1/2) ||| Mirror (Tall 1 (3/100) (1/2)))
+  ||| noBorders (fullscreenFull Full)
 
 myManageHook = composeAll
    [ className =? "Rhythmbox" --> doShift "="
@@ -58,35 +55,33 @@ myManageHook = composeAll
 
 myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
  
-myKeys = [
-	((mod4Mask .|. shiftMask, xK_z     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
-	, ((mod4Mask              , xK_z     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
-	, ((mod4Mask              , xK_o     ), spawn "xscreensaver-command -lock")
-	]
+myKeys =
+  ((mod4Mask .|. shiftMask, xK_z     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
+  : ((mod4Mask              , xK_z     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
+  : ((mod4Mask              , xK_0     ), spawn "xscreensaver-command -lock")
+  : ((mod4Mask              , xK_9     ), spawn "dmenu_run") -- %! Launch dmenu
+  : ((mod4Mask .|. shiftMask, xK_9     ), kill)
+  : []
 
-envSwitchKeys = [
-	(otherModMasks ++ "M-" ++ [key], action tag)
-	| (tag, key)  <- zip myWorkspaces "123qweasd"
-	, (otherModMasks, action) <- [ ("", windows . W.greedyView) -- was W.greedyView
-                                     , ("S-", windows . W.shift)]
-	] ++ [
-	(otherModMasks ++ "M-" ++ [key], action tag)
-	| (tag, key)  <- zip ["4","5","9","8"] "/,.o"
-	, (otherModMasks, action) <- [ ("", windows . W.greedyView) -- was W.greedyView
-                                     , ("S-", windows . W.shift)]
-	] -- for dvorak mode, flips 9 and 6 relative to qwerty
+envSwitchKeys =
+  [(otherModMasks ++ "M-" ++ [key], action tag)
+  | (tag, key)  <- zip myWorkspaces "123qweasd", (otherModMasks, action) <- [
+      ("", windows . W.greedyView), ("S-", windows . W.shift)]
+  ] ++
+  [(otherModMasks ++ "M-" ++ [key], action tag)
+  | (tag, key)  <- zip ["4","5","9","8"] "/,.o", (otherModMasks, action) <- [
+      ("", windows . W.greedyView), ("S-", windows . W.shift)]
+  ] -- for dvorak mode, flips 9 and 6 relative to qwerty
 
-myKeysP = ("<XF86MonBrightnessUp>", spawn "xbacklight -inc 10")
-        : ("<XF86MonBrightnessDown>", spawn "xbacklight -dec 10")
-        : ("<XF86AudioLowerVolume>", spawn "amixer -D pulse sset Master 5%-")
-        : ("<XF86AudioRaiseVolume>", spawn "amixer -D pulse sset Master 5%+")
-        : ("<XF86AudioMute>", spawn "amixer -D pulse sset Master toggle")
-        : ("M-<F12>", spawn "scrot -e 'xclip -target image/png -selection c -i $f'")
-        : ("M-S-<F12>", spawn "sleep 0.5; scrot -d 1 -s -e 'xclip -target image/png -selection c -i $f'")
-        : ("M-[", spawn "xterm -e \"ssh -Y nic@10.71.2.15\"")
-        : ("M-]", spawn "xterm -e \"ssh -Y nic@10.71.2.14\"")
-        : ("M-S-[", spawn "xrandr --output DP-1-1-1 --rotate left")
-        : ("M-S-]", spawn "xrandr --output DP-1-1-1 --rotate left; xrandr --output DP-1-1-1 --rotate normal")
-        : ("M-<Return>", spawn "emacsclient -c")
-        : ("M-0", spawn "keyboard_layout_change.sh")
-        : envSwitchKeys
+myKeysP =
+  ("<XF86MonBrightnessUp>", spawn "light -A 10")
+  : ("<XF86MonBrightnessDown>", spawn "light -U 10")
+  : ("<XF86AudioLowerVolume>", spawn "amixer -D pulse sset Master 5%-")
+  : ("<XF86AudioRaiseVolume>", spawn "amixer -D pulse sset Master 5%+")
+  : ("<XF86AudioMute>", spawn "amixer -D pulse sset Master toggle")
+  : ("M-<F12>", spawn "scrot -e 'xclip -target image/png -selection c -i $f'")
+  : ("M-S-<F12>", spawn "sleep 0.5; scrot -d 1 -s -e 'xclip -target image/png -selection c -i $f'")
+  : ("M-]", spawn "xterm -e \"ssh -Y nic@10.71.2.14\"")
+  : ("M-<Return>", spawn "emacsclient -c")
+  : ("M-0", spawn "keyboard_layout_change.sh")
+  : envSwitchKeys
