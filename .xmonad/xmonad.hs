@@ -58,9 +58,9 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 myKeys =
   ((mod4Mask .|. shiftMask, xK_z     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
   : ((mod4Mask              , xK_z     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
-  : ((mod4Mask              , xK_0     ), spawn "xscreensaver-command -lock")
-  : ((mod4Mask              , xK_9     ), spawn "dmenu_run") -- %! Launch dmenu
-  : ((mod4Mask .|. shiftMask, xK_9     ), kill)
+  : ((mod4Mask,               xK_9     ), spawn "xscreensaver-command -lock")
+  : ((mod4Mask              , xK_4     ), spawn "dmenu_run") -- %! Launch dmenu
+  : ((mod4Mask .|. shiftMask, xK_4     ), kill)
   : []
 
 envSwitchKeys =
