@@ -17,7 +17,7 @@ import qualified XMonad.StackSet as W
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 
 -- Command to launch the bar.
-myBar = "/home/user/.cabal/bin/xmobar"
+myBar = "~/.cabal/bin/xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
