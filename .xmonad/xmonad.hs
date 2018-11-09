@@ -69,7 +69,7 @@ envSwitchKeys =
       ("", windows . W.greedyView), ("S-", windows . W.shift)]
   ] ++
   [(otherModMasks ++ "M-" ++ [key], action tag)
-  | (tag, key)  <- zip ["4","5","9","8"] "/,.o", (otherModMasks, action) <- [
+  | (tag, key)  <- zip ["4","5","9","8"] "',.o", (otherModMasks, action) <- [
       ("", windows . W.greedyView), ("S-", windows . W.shift)]
   ] -- for dvorak mode, flips 9 and 6 relative to qwerty
 
