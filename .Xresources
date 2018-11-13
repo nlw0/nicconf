@@ -1,0 +1,42 @@
+XTerm*eightBitInput: false
+XTerm*modifyCursorKeys:2
+
+XTerm.termName: xterm-256color
+
+
+!XTerm*background: black
+!XTerm*foreground: white
+!XTerm*pointerColor: black
+!XTerm*pointerColorBackground: white
+XTerm*background: #262626
+XTerm*foreground: #f8f8f2
+XTerm*pointerColor: black
+XTerm*pointerColorBackground: #f8f8f0
+XTerm*customization: -color
+
+!XTerm*font: 7x13
+!XTerm*faceName: UbuntuMono-9
+XTerm*faceName: xft:Droid Sans Mono for Powerline Plus Nerd File Types Mono:pixelsize=10:antialias=true:hinting=true
+!XTerm*faceName: 7x13
+XTerm*faceSize: 9
+XTerm*italicULMode: true
+XTerm*selectToClipboard: false
+XTerm*bellIsUrgent: true
+XTerm*charClass: 33:48,36-47:48,58-59:48,61:48,63-64:48,95:48,126:48
+XTerm*on2Clicks:  regex [^/@ \n]+
+XTerm*on3Clicks:  regex [^ \n]+
+XTerm*on4Clicks:  regex [^#$]+
+XTerm*on5Clicks:  line
+
+!*VT100.Translations:	#override \
+!	<Key>Delete: string(0x04) \n\
+!	<Key>BackSpace: string(0x7F)
+!XTerm*ttyModes: erase ^?
+
+
+!Emacs*font: Monospace-7
+!Emacs.face.attributeFamily:Monospace
+!Emacs.face.attributeHeight:70
+
+Xft.dpi: 96.0
+!Xft.dpi: 64.0
