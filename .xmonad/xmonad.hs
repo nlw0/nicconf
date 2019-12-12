@@ -17,7 +17,7 @@ import qualified XMonad.StackSet as W
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 
 -- Command to launch the bar.
-myBar = "~/.cabal/bin/xmobar"
+myBar = "/home/user/.cabal/bin/xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
@@ -28,7 +28,7 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 baseConfig = desktopConfig
 
 myConfig = baseConfig
-  { terminal = "xterm"
+  { terminal = "st"
   , modMask = mod4Mask
   , layoutHook = myLayout
   , borderWidth = 1
@@ -38,8 +38,7 @@ myConfig = baseConfig
   } `additionalKeys` myKeys `additionalKeysP` myKeysP
 
 myLayout =
-  avoidStruts (Tall 1 (3/100) (1/2) ||| Mirror (Tall 1 (3/100) (1/2)))
-  ||| noBorders (fullscreenFull Full)
+  noBorders (fullscreenFull Full) ||| avoidStruts (Tall 1 (3/100) (1/2) ||| Mirror (Tall 1 (3/100) (1/2)))
 
 myManageHook = composeAll
    [ className =? "Rhythmbox" --> doShift "="
@@ -79,7 +78,7 @@ myKeysP =
   : ("<XF86AudioLowerVolume>", spawn "amixer -D pulse sset Master 5%-")
   : ("<XF86AudioRaiseVolume>", spawn "amixer -D pulse sset Master 5%+")
   : ("<XF86AudioMute>", spawn "amixer -D pulse sset Master toggle")
-  : ("M-<F12>", spawn "scrot -e 'xclip -target image/png -selection c -i $f'")
+  : ("M-<F12>", spawn "scrot -u -e 'xclip -target image/png -selection c -i $f'")
   : ("M-S-<F12>", spawn "sleep 0.5; scrot -d 1 -s -e 'xclip -target image/png -selection c -i $f'")
   : ("M-]", spawn "xterm -e \"ssh -Y nic@10.71.2.14\"")
   : ("M-<Return>", spawn "emacsclient -c")
