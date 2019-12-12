@@ -58,20 +58,25 @@ myWorkspaces = ["1","2","3","4","5","6","7","8","9"]
 myKeys =
   ((mod4Mask .|. shiftMask, xK_z     ), io (exitWith ExitSuccess)) -- %! Quit xmonad
   : ((mod4Mask              , xK_z     ), spawn "if type xmonad; then xmonad --recompile && xmonad --restart; else xmessage xmonad not in \\$PATH: \"$PATH\"; fi") -- %! Restart xmonad
-  : ((mod4Mask,               xK_9     ), spawn "xscreensaver-command -lock")
-  : ((mod4Mask              , xK_4     ), spawn "dmenu_run") -- %! Launch dmenu
-  : ((mod4Mask .|. shiftMask, xK_4     ), kill)
+  : ((mod4Mask,               xK_0     ), spawn "xscreensaver-command -lock")
+  : ((mod4Mask              , xK_5     ), spawn "dmenu_run") -- %! Launch dmenu
+  : ((mod4Mask .|. shiftMask, xK_5     ), kill)
   : []
 
+-- envSwitchKeys =
+--   [(otherModMasks ++ "M-" ++ [key], action tag)
+--   | (tag, key)  <- zip myWorkspaces "123qweasd", (otherModMasks, action) <- [
+--       ("", windows . W.greedyView), ("S-", windows . W.shift)]
+--   ] ++
+--   [(otherModMasks ++ "M-" ++ [key], action tag)
+--   | (tag, key)  <- zip ["4","5","9","8"] "',.o", (otherModMasks, action) <- [
+--       ("", windows . W.greedyView), ("S-", windows . W.shift)]
+--   ] -- for dvorak mode, flips 9 and 6 relative to qwerty
 envSwitchKeys =
   [(otherModMasks ++ "M-" ++ [key], action tag)
-  | (tag, key)  <- zip myWorkspaces "123qweasd", (otherModMasks, action) <- [
+  | (tag, key)  <- zip myWorkspaces "234,.poeu", (otherModMasks, action) <- [
       ("", windows . W.greedyView), ("S-", windows . W.shift)]
-  ] ++
-  [(otherModMasks ++ "M-" ++ [key], action tag)
-  | (tag, key)  <- zip ["4","5","9","8"] "',.o", (otherModMasks, action) <- [
-      ("", windows . W.greedyView), ("S-", windows . W.shift)]
-  ] -- for dvorak mode, flips 9 and 6 relative to qwerty
+  ]
 
 myKeysP =
   ("<XF86MonBrightnessUp>", spawn "light -A 10")
@@ -82,6 +87,7 @@ myKeysP =
   : ("M-<F12>", spawn "scrot -e 'xclip -target image/png -selection c -i $f'")
   : ("M-S-<F12>", spawn "sleep 0.5; scrot -d 1 -s -e 'xclip -target image/png -selection c -i $f'")
   : ("M-]", spawn "xterm -e \"ssh -Y nic@10.71.2.14\"")
-  : ("M-<Return>", spawn "emacsclient -c")
+  : ("M-<Backspace>", spawn "emacsclient -c")
+  : ("M-S-<Backspace>", spawn "xterm")
   : ("M-0", spawn "keyboard_layout_change.sh")
   : envSwitchKeys
